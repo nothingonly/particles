@@ -17,7 +17,7 @@ function getTextPositions(text) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     // Text setup
-    ctx.font = 'bold 60px Arial';
+    ctx.font = 'bold 45px Arial';
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -25,21 +25,30 @@ function getTextPositions(text) {
     // Wrapping Text
     const words = text.split(' ');
     let line = '';
-    let y = canvas.height / 2 - 40;
+    const lines = [];
     
-    // Very basic word wrapping for the canvas
+    // Better word wrapping
     for (let n = 0; n < words.length; n++) {
         const testLine = line + words[n] + ' ';
         const metrics = ctx.measureText(testLine);
-        if (metrics.width > canvas.width * 0.8 && n > 0) {
-            ctx.fillText(line, canvas.width / 2, y);
+        if (metrics.width > canvas.width * 0.9 && n > 0) {
+            lines.push(line);
             line = words[n] + ' ';
-            y += 70;
         } else {
             line = testLine;
         }
     }
-    ctx.fillText(line, canvas.width / 2, y);
+    lines.push(line);
+
+    // Vertically center the text block
+    const lineHeight = 55;
+    const totalHeight = lines.length * lineHeight;
+    let y = (canvas.height - totalHeight) / 2 + (lineHeight / 2);
+    
+    lines.forEach(l => {
+        ctx.fillText(l.trim(), canvas.width / 2, y);
+        y += lineHeight;
+    });
 
     // Sample Pixels
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
