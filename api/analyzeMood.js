@@ -49,14 +49,24 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing text in request body' });
     }
 
-    const modelName = "gemini-3.0-pro";
-    const model = genAI.getGenerativeModel({ model: modelName });
-    
-    const prompt = `System Instructions: ${systemInstruction}\n\nAnalyze the sentiment of this user text: "${text}".\nReturn JSON ONLY.`;
-    
-    const result = await model.generateContent(prompt);
-    let textResponse = result.response.text();
-    textResponse = textResponse.replace(/```json|```/g, "").trim();
+    const getResponse = async (modelName) => {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const prompt = `System Instructions: ${systemInstruction}\n\nAnalyze the sentiment of this user text: "${text}".\nReturn JSON ONLY.`;
+      const result = await model.generateContent(prompt);
+      let textResponse = result.response.text();
+      return textResponse.replace(/```json|```/g, "").trim();
+    };
+
+    let textResponse;
+    try {
+      textResponse = await getResponse("gemini-2.5-flash"); // attempt newer if available
+    } catch(e) {
+      try {
+        textResponse = await getResponse("gemini-2.0-flash");
+      } catch(err) {
+        textResponse = await getResponse("gemini-1.5-flash");
+      }
+    }
     
     const jsonResponse = JSON.parse(textResponse);
     return res.status(200).json(jsonResponse);
