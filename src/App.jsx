@@ -252,9 +252,20 @@ export default function App() {
             </Canvas>
 
             {/* Display Spoken / Typed Prompt */}
-            <div style={{ position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center', color: '#aaaaaa', pointerEvents: 'none', width: '80%' }}>
+            <div style={{ position: 'absolute', top: '5%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center', color: '#aaaaaa', pointerEvents: 'none', width: '80%' }}>
                 <h3 style={{ fontFamily: 'sans-serif', fontSize: '1.2rem', fontWeight: 'normal' }}>{text}</h3>
             </div>
+
+            {/* Clearly Readable HTML Overlay for the AI Reply */}
+            {replyText && (
+                <div style={{ position: 'absolute', top: '15%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center', pointerEvents: 'none', width: '80%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '20px 40px', borderRadius: '20px', backdropFilter: 'blur(10px)', border: `1px solid ${color}44` }}>
+                        <h2 style={{ fontFamily: '"Inter", sans-serif', fontSize: '2rem', fontWeight: '300', color: color, margin: 0, textShadow: '0 0 15px rgba(0,0,0,0.8)' }}>
+                            {replyText}
+                        </h2>
+                    </div>
+                </div>
+            )}
 
             {/* Input Controls */}
             <div style={{ position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px', width: '90%', maxWidth: '500px' }}>
