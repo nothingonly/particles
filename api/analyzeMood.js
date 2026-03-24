@@ -10,18 +10,20 @@ Input: User speech text.
 Output: JSON object only.
 
 Rules for "Mood":
-- "angry" -> hex: "#FF3333", speed: 2.0
-- "happy" -> hex: "#FFD700", speed: 0.8
-- "sad" -> hex: "#1133AA", speed: 0.2
-- "love" -> hex: "#FF69B4", speed: 0.5
-- "neutral" -> hex: "#88CCFF", speed: 1.0
+- "Angry/Hate" -> Color: #FF3333 (Red), Speed: Fast, Shape: box
+- "Happy/Joy" -> Color: #FFD700 (Gold), Speed: Normal, Shape: torus
+- "Sad/Grief" -> Color: #1133AA (Deep Blue), Speed: Slow, Shape: sphere
+- "Love/Sweet" -> Color: #FF69B4 (Hot Pink), Speed: Gentle, Shape: torus
+- "Neutral" -> Color: #88CCFF (Light Blue), Speed: Idle, Shape: sphere
 
 Response Format:
 {
   "reply": "Your conversational reply here",
-  "mood": "angry|happy|sad|love|neutral",
-  "hex": "#RRGGBB"
+  "mood_color": "#HEXCODE",
+  "particle_speed": "Fast|Normal|Slow|Gentle|Idle",
+  "shape_type": "text" 
 }
+(Note: By default use shape_type "text" unless the user's input asks for a specific particle shape).
 `;
 
 export default async function handler(req, res) {
@@ -54,6 +56,12 @@ export default async function handler(req, res) {
       const prompt = `System Instructions: ${systemInstruction}\n\nAnalyze the sentiment of this user text: "${text}".\nReturn JSON ONLY.`;
       const result = await model.generateContent(prompt);
       let textResponse = result.response.text();
+      
+      // Extract ONLY the JSON part between { and } 
+      const jsonMatch = textResponse.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+          return jsonMatch[0];
+      }
       return textResponse.replace(/```json|```/g, "").trim();
     };
 

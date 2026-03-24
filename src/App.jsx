@@ -179,7 +179,14 @@ export default function App() {
             });
 
             if (!response.ok) {
-                alert("Could not reach backend. Verify emulator/server is running.");
+                let errorMsg = "Could not reach backend. ";
+                try {
+                    const errorData = await response.json();
+                    errorMsg += errorData.error || response.statusText;
+                } catch(e) {
+                    errorMsg += response.statusText;
+                }
+                alert("API Error: " + errorMsg);
                 return;
             }
 
