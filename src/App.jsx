@@ -121,14 +121,15 @@ function ParticleCloud({ color, speed, shapeType, replyText }) {
     }, []);
 
     useFrame((state, delta) => {
-        // Only rotate if it's NOT text (text needs to be readable)
         if (shapeType !== 'text') {
             ref.current.rotation.x -= delta / 10;
             ref.current.rotation.y -= delta / 15;
+            ref.current.rotation.z += delta / 20;
         } else {
             // Smoothly reset rotation for text readability
             ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, 0, 0.05);
             ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, 0, 0.05);
+            ref.current.rotation.z = THREE.MathUtils.lerp(ref.current.rotation.z, 0, 0.05);
         }
 
         // Lerp positions towards target
@@ -147,11 +148,9 @@ function ParticleCloud({ color, speed, shapeType, replyText }) {
     });
 
     return (
-        <group rotation={[0, 0, Math.PI / 4]}>
-            <Points ref={ref} positions={currentPositions.current} stride={3} frustumCulled={false}>
-                <PointMaterial transparent color={color} size={0.02} sizeAttenuation={true} depthWrite={false} />
-            </Points>
-        </group>
+        <Points ref={ref} rotation={[0, 0, Math.PI / 4]} positions={currentPositions.current} stride={3} frustumCulled={false}>
+            <PointMaterial transparent color={color} size={0.02} sizeAttenuation={true} depthWrite={false} blending={THREE.AdditiveBlending} />
+        </Points>
     );
 }
 
