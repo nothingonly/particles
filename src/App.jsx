@@ -259,8 +259,8 @@ export default function App() {
             {/* Clearly Readable HTML Overlay for the AI Reply */}
             {replyText && (
                 <div style={{ position: 'absolute', top: '15%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center', pointerEvents: 'none', width: '80%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '20px 40px', borderRadius: '20px', backdropFilter: 'blur(10px)', border: `1px solid ${color}44` }}>
-                        <h2 style={{ fontFamily: '"Inter", sans-serif', fontSize: '2rem', fontWeight: '300', color: color, margin: 0, textShadow: '0 0 15px rgba(0,0,0,0.8)' }}>
+                    <div style={{ background: 'rgba(0, 0, 0, 0.6)', padding: '20px 40px', borderRadius: '20px', backdropFilter: 'blur(10px)', border: `1px solid ${color}44` }}>
+                        <h2 style={{ fontFamily: '"Inter", sans-serif', fontSize: '1.8rem', fontWeight: '400', color: '#ffffff', margin: 0, textShadow: `0 0 20px ${color}, 0 0 40px ${color}, 0 2px 4px rgba(0,0,0,0.8)` }}>
                             {replyText}
                         </h2>
                     </div>
