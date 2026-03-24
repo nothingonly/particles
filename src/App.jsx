@@ -148,7 +148,7 @@ function ParticleCloud({ color, speed, shapeType, replyText }) {
     });
 
     return (
-        <Points ref={ref} rotation={[0, 0, Math.PI / 4]} positions={currentPositions.current} stride={3} frustumCulled={false}>
+        <Points ref={ref} positions={currentPositions.current} stride={3} frustumCulled={false}>
             <PointMaterial transparent color={color} size={0.02} sizeAttenuation={true} depthWrite={false} blending={THREE.AdditiveBlending} />
         </Points>
     );
